@@ -180,7 +180,7 @@ system.time(model4 <- ezANOVA(data = data4,
 print(model4)
 
 
-## FOr timing reasons just run two bayesian ANOVAs
+## For timing reasons just run two Bayesian ANOVAs
 system.time(ModelB1 <- anovaBF(dv ~ factor*Group + id, data = data1, whichRandom = "id", iterations = 5e5))
 print(ModelB1)
 
