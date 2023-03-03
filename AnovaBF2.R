@@ -11,7 +11,10 @@ for (package in packages) {
 # type 3 sum of squares 
 options(contrasts = c("contr.sum", "contr.poly"))
 
+### create 4 data frames
 ## data1
+# set the parameters
+
 {
   n <- 45
   mu1 <- c(0, 0)
@@ -22,7 +25,6 @@ options(contrasts = c("contr.sum", "contr.poly"))
   Rho <- 0.3
   Sigma <- matrix(c(var, Rho, Rho, var), 2, 2)
 }
-
 
 gp1 <- mvrnorm(n = n, mu = mu1, Sigma = Sigma)
 gp2 <- mvrnorm(n = n, mu = mu2, Sigma = Sigma)
@@ -40,13 +42,14 @@ data1 <- melt(data_wide, id.vars = c("id", "Group"), measure.vars = c("factor1",
               variable.name = "factor", value.name = "dv")
 
 ## data 2
+# set the parameters
 
 { 
   n <- 45
   mu1 <- c(-1, 1)
   mu2 <- c(-1.5, 1.5)
   mu3 <- c(-1.7, 1.7)
-  mu4 <- c(-1.71, 1.71)µ
+  mu4 <- c(-1.71, 1.71)
   var <- 1
   Rho <- 0.5
   Sigma <- matrix(c(var, Rho, Rho, var), 2, 2)
@@ -68,6 +71,7 @@ data2 <- melt(data_wide2, id.vars = c("id", "Group"), measure.vars = c("factor1"
               variable.name = "factor", value.name = "dv")
 
 ## data 3
+# set the parameters
 
 { 
   n <- 45
@@ -96,6 +100,7 @@ data3 <- melt(data_wide3, id.vars = c("id", "Group"), measure.vars = c("factor1"
               variable.name = "factor", value.name = "dv")
 
 ## data 4
+# set the parameters
 
 { 
   n <- 45
@@ -147,6 +152,8 @@ data4 <- melt(data_wide3, id.vars = c("id", "Group"), measure.vars = c("factor1"
   data4$Group <- as.factor(data4$Group)
 }
 
+### Run the ANOVAs
+
 system.time(model1 <- ezANOVA(data = data1, 
                               dv =. (dv), wid =. (id),
                               within =. (factor),
@@ -179,18 +186,20 @@ system.time(model4 <- ezANOVA(data = data4,
                               detailed = T))
 print(model4)
 
-
+### Run the Bayesian ANOVAs
 ## For timing reasons just run two Bayesian ANOVAs
-system.time(ModelB1 <- anovaBF(dv ~ factor*Group + id, data = data1, whichRandom = "id", iterations = 5e5))
+
+system.time(ModelB1 <- anovaBF(dv ~ factor*Group + id, data = data1, whichRandom = "id", iterations = 1e3))
 print(ModelB1)
 
 system.time(ModelB2 <- anovaBF(dv ~ factor*Group + id, data = data2, whichRandom = "id", iterations = 5e5))
 print(ModelB2)
 
-BFincl1 <- bayesfactor_inclusion(ModelB1, match_models = T)
-Bfincl2 <- bayesfactor_inclusion(ModelB2, match_models = T)
+# Bayes factors inclusion
+BFincl1 <- bayesfactor_inclusion(ModelB1, match_models = T); BFincl1
+Bfincl2 <- bayesfactor_inclusion(ModelB2, match_models = T); BFincl2
 
-## parallel processing 
+### parallel processing 
 nb_cores <- detectCores()
 print(nb_cores)
 
@@ -198,15 +207,18 @@ print(nb_cores)
 cl <- makeCluster(4) 
 registerDoParallel(cl)
 
+# embed the data frames within a list
 List <- list(data1, data2, data3, data4)
 
+### run the ANOVAs in parallel
 system.time(results1 <- foreach(data = List, .combine = "rbind") %dopar% {
   library(data.table)
   AovModel <- aov(dv ~ Group*factor + Error(id/factor), data = data)
   return(data.table(summary(AovModel)))
 })
 
-results1[[1]]
+# It seems to not work correctly
+results1[[1]][[2]]
 results1[[2]]
 results1[[3]]
 results1[[4]]
@@ -227,9 +239,10 @@ results2[[2]]
 results2[[3]]
 results2[[4]]
 
+### Run the Bayesian ANOVAs in parallel
 system.time(results3 <- foreach(data = List, .combine = "c") %dopar% {
   library(BayesFactor); library(bayestestR); library(data.table)
-  ModelBayes <- anovaBF(dv ~ factor*Group + id, data = data, whichRandom = "id", iterations = 5e5)
+  ModelBayes <- anovaBF(dv ~ factor*Group + id, data = data, whichRandom = "id", iterations = 1e3)
   return(data.table(ModelBayes))
 })
 
@@ -239,9 +252,9 @@ results3[[3]]
 results3[[4]]
 
 # Bayes factor inclusion
-ModelBF1 <- bayesfactor_inclusion(results3[[1]], match_models = T)
-ModelBF2 <- bayesfactor_inclusion(results3[[2]], match_models = T)
-ModelBF3 <- bayesfactor_inclusion(results3[[3]], match_models = T)
-ModelBF4 <- bayesfactor_inclusion(results3[[4]], match_models = T)
+ModelBF1 <- bayesfactor_inclusion(results3[[1]], match_models = T); ModelBF1
+ModelBF2 <- bayesfactor_inclusion(results3[[2]], match_models = T); ModelBF2
+ModelBF3 <- bayesfactor_inclusion(results3[[3]], match_models = T); ModelBF3
+ModelBF4 <- bayesfactor_inclusion(results3[[4]], match_models = T); ModelBF4
 
 stopCluster(cl)
