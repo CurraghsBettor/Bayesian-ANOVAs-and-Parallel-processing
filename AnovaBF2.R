@@ -189,7 +189,7 @@ print(model4)
 ### Run the Bayesian ANOVAs
 ## For timing reasons just run two Bayesian ANOVAs
 
-system.time(ModelB1 <- anovaBF(dv ~ factor*Group + id, data = data1, whichRandom = "id", iterations = 1e3))
+system.time(ModelB1 <- anovaBF(dv ~ factor*Group + id, data = data1, whichRandom = "id", iterations = 5e5)
 print(ModelB1)
 
 system.time(ModelB2 <- anovaBF(dv ~ factor*Group + id, data = data2, whichRandom = "id", iterations = 5e5))
@@ -242,7 +242,7 @@ results2[[4]]
 ### Run the Bayesian ANOVAs in parallel
 system.time(results3 <- foreach(data = List, .combine = "c") %dopar% {
   library(BayesFactor); library(bayestestR); library(data.table)
-  ModelBayes <- anovaBF(dv ~ factor*Group + id, data = data, whichRandom = "id", iterations = 1e3)
+  ModelBayes <- anovaBF(dv ~ factor*Group + id, data = data, whichRandom = "id", iterations = 5e5
   return(data.table(ModelBayes))
 })
 
@@ -251,7 +251,7 @@ results3[[2]]
 results3[[3]]
 results3[[4]]
 
-# Bayes factor inclusion
+# Bayes factors inclusion
 ModelBF1 <- bayesfactor_inclusion(results3[[1]], match_models = T); ModelBF1
 ModelBF2 <- bayesfactor_inclusion(results3[[2]], match_models = T); ModelBF2
 ModelBF3 <- bayesfactor_inclusion(results3[[3]], match_models = T); ModelBF3
