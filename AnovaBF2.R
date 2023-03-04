@@ -26,6 +26,7 @@ options(contrasts = c("contr.sum", "contr.poly"))
   Sigma <- matrix(c(var, Rho, Rho, var), 2, 2)
 }
 
+# sampling from bivariate normal distributions
 gp1 <- mvrnorm(n = n, mu = mu1, Sigma = Sigma)
 gp2 <- mvrnorm(n = n, mu = mu2, Sigma = Sigma)
 gp3 <- mvrnorm(n = n, mu = mu3, Sigma = Sigma)
@@ -55,6 +56,7 @@ data1 <- melt(data_wide, id.vars = c("id", "Group"), measure.vars = c("factor1",
   Sigma <- matrix(c(var, Rho, Rho, var), 2, 2)
 }
 
+# sampling from bivariate normal distributions
 gp1 <- mvrnorm(n = n, mu = mu1, Sigma = Sigma)
 gp2 <- mvrnorm(n = n, mu = mu2, Sigma = Sigma)
 gp3 <- mvrnorm(n = n, mu = mu3, Sigma = Sigma)
@@ -84,6 +86,7 @@ data2 <- melt(data_wide2, id.vars = c("id", "Group"), measure.vars = c("factor1"
   Sigma <- matrix(c(var, Rho, Rho, var), 2, 2)
 }
 
+# sampling from bivariate normal distributions
 gp1 <- mvrnorm(n = n, mu = mu1, Sigma = Sigma)
 gp2 <- mvrnorm(n = n, mu = mu2, Sigma = Sigma)
 gp3 <- mvrnorm(n = n, mu = mu3, Sigma = Sigma)
@@ -113,6 +116,7 @@ data3 <- melt(data_wide3, id.vars = c("id", "Group"), measure.vars = c("factor1"
   Sigma <- matrix(c(var, Rho, Rho, var), 2, 2)
 }
 
+# sampling from bivariate normal distributions
 gp1 <- mvrnorm(n = n, mu = mu1, Sigma = Sigma)
 gp2 <- mvrnorm(n = n, mu = mu2, Sigma = Sigma)
 gp3 <- mvrnorm(n = n, mu = mu3, Sigma = Sigma)
