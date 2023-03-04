@@ -221,7 +221,7 @@ system.time(results1 <- foreach(data = List, .combine = "rbind") %dopar% {
   return(data.table(summary(AovModel)))
 })
 
-# It seems to not work correctly
+# It seems that I cannot correctly extract the outputs for those first ANOVAs
 results1[[1]][[2]]
 results1[[2]]
 results1[[3]]
