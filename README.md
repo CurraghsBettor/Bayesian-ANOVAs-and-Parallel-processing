@@ -1,3 +1,3 @@
-# Bayes-factor-and-Paralleling-processing
+# Bayes-factors-and-Paralleling-processing
 
 In cognitive psychology, for a given experiment, on the one hand, it happens that we collect several measures (e.g., 3 dependent variables), thus, we have to deal with multiple analyses (e.g., three or more ANOVAs). On the other hand, given that the so-called $p$-value is limited to only rejecting the null hypothesis, studies got more concise results by using the Bayes factors estimation. As a consequence, for a given analysis and when using the `BayesFactor` package in R, one can face a long time of computation depending on the number of independent variables, participants, and the number of iterations desired (since the more the number of iterations is, the more the concise results by reducing the proportional errors). The current code explores how to reduce the overall time of analysis using parallel computing applied to Bayesian ANOVAs estimation.
