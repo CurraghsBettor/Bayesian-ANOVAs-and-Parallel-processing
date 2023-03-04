@@ -1,1 +1,3 @@
 # Bayes-factor-and-Paralleling-processing
+
+In cognitive psychology, for a given experiment, one the one hand it happens that we collect several measures (e.g., 3 dependent variables), thus, having to deal with multiple analyses (e.g., three or more ANOVAs). On the other hand, given that the so-called $p$-value is limited to only reject the null hypothesis, studies got more concise results by using the Bayes factor estimation. As a consequence, when dealing with a given analysis using the `BayesFactor` yield to times consuming analyses depending on the number of independent variable, participants... thus, when dealing with some dependent variables (so with some data frames) performing Bayesian ANOVA can be really time constraining.
