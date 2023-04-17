@@ -246,7 +246,7 @@ results2[[4]]
 ### Run the Bayesian ANOVAs in parallel
 system.time(results3 <- foreach(data = List, .combine = "c") %dopar% {
   library(BayesFactor); library(bayestestR); library(data.table)
-  ModelBayes <- anovaBF(dv ~ factor*Group + id, data = data, whichRandom = "id", iterations = 5e5
+  ModelBayes <- anovaBF(dv ~ factor*Group + id, data = data, whichRandom = "id", iterations = 5e5)
   return(data.table(ModelBayes))
 })
 
