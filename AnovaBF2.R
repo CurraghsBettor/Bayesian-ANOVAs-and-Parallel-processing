@@ -193,7 +193,7 @@ print(model4)
 ### Run the Bayesian ANOVAs
 ## For timing reasons just run two Bayesian ANOVAs
 
-system.time(ModelB1 <- anovaBF(dv ~ factor*Group + id, data = data1, whichRandom = "id", iterations = 5e5)
+system.time(ModelB1 <- anovaBF(dv ~ factor*Group + id, data = data1, whichRandom = "id", iterations = 5e5))
 print(ModelB1)
 
 system.time(ModelB2 <- anovaBF(dv ~ factor*Group + id, data = data2, whichRandom = "id", iterations = 5e5))
